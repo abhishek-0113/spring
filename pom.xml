@@ -1,64 +1,52 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.example</groupId>
-  <artifactId>SpringMVCAssignment</artifactId>
-  <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>SpringMVCAssignment Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>6.1.3</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>6.1.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>6.1.3</version>
-    </dependency>
-    <dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>6.0.0</version>
-    <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>1.4.200</version>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.servlet.jsp.jstl</groupId>
-      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-      <version>3.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.annotation</groupId>
-      <artifactId>jakarta.annotation-api</artifactId>
-      <version>2.1.1</version>
-    </dependency>
-     <dependency>
-<groupId>org.glassfish.web</groupId>
-<artifactId>jakarta.servlet.jsp.jstl</artifactId>
-<version>3.0.0</version>
-</dependency>
-  </dependencies>
-  <build>
-    <finalName>SpringMVCAssignment</finalName>
-  </build>
-</project>
+Java Backend – Intermediate 
+ABC Bank Credit Card – Case Study 
+The purpose of this application is to find if the customer is eligible for a Credit Card offered by the 
+ABC Bank.. 
+The application should support two types of users: 
+1. Customer: can check whether he/she is eligible for the credit card. 
+2. Admin: can manage the bank’s database. To maintain valid details about the customer. 
+Main screen can be as below. 
+Admin User:
+Admin user can click on the “Admin” link to perform admin activities. 
+When the “Admin” link is clicked, a login page is shown as below: 
+At present only 1 admin exists. Use below credentials for validating Admin. 
+User id stella@gmail.com
+Password admin
+If the credentials entered by the admin are incorrect, either the user id is invalid or the password is 
+incorrect, you can show the below screen and allow the admin user to navigate back to the login 
+screen. 
+If the credentials are entered correctly, the below Admin Page is shown. 
+When the admin clicks on the “Add Customer” link, the admin should be shown a page to enter new 
+customer details. And the Customer details are to be stored in the database. Clicking on “Delete 
+Customer” should show a page where admin can enter the PAN card of the customer to be deleted. 
+Upon successful completion of add or delete, the data must be added/deleted from the database 
+and appropriate message should be displayed to confirm the operation. 
+Customer details can be as below: 
+Each customer should have id, credit score and the pan number. 
+Customer :
+When customer clicks on “Customer” link in the main screen, below page can be shown. The 
+customer needs to enter the PAN Number to check whether eligible for credit card or not. 
+Implement the appropriate validation to check if the PAN card entered is correct. 
+Check the PAN card against database to see if it exists. If it exists, then go ahead to the next step of 
+finding the credit score of the user. 
+If user enters the PAN number which is not there in the database
+Show the error message as shown below. 
+Clicking on Enter Again, should take the user to enter the PAN again. 
+If the user entered a valid PAN number which is there in the database, then based on the credit score, 
+user should be considered as eligible or not eligible for the credit card. PAN number entered by the 
+customer can be in any case (case-insensitive). 
+Eligibility criteria for a user to get credit card is to have credit score >= 5 
+If eligible, show the below screen to the customer.
+If not eligible, show the below screen to the customer.
+General Requirements: 
+1. Apply suitable headings/titles as deemed appropriate. 
+2. Apply suitable validations to the forms wherever applicable (All the fields mandatory, credit 
+score must be number etc.,) 
+3. The screen designs given above are for easy understanding of the flow and functionality. You 
+can design the screens as per your choice. 
+4. Please use Thymeleaf view. 
+5. Styling and colors can be used as per your choice 
+Technologies mandatorily that needs to be used: 
+ Languages and Frameworks: Spring Boot & Spring Data 
+ Databases : Any In-Memory DB like H2/HSQL 
+ Build Tool: Create SpringBoot project with Maven build system 
