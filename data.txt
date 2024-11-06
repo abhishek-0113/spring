@@ -1,62 +1,25 @@
-viewFlights.html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Available Flights</title>
-</head>
-<body>
-    <h2>Available Flights</h2>
-    <table>
-        <tr>
-            <th>Flight Number</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Date</th>
-            <th>Seats</th>
-            <th>Action</th>
-        </tr>
-        <tr th:each="flight : ${flights}">
-            <td th:text="${flight.flightNumber}">FLIGHT_NUMBER</td>
-            <td th:text="${flight.source}">SOURCE</td>
-            <td th:text="${flight.destination}">DESTINATION</td>
-            <td th:text="${flight.date}">DATE</td>
-            <td th:text="${flight.seats}">SEATS</td>
-            <td>
-                <a th:href="@{/bookings/create(flightId=${flight.id})}">Book Now</a>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
--------
-viewBookings.html
-
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Your Bookings</title>
-</head>
-<body>
-    <h2>Your Bookings</h2>
-    <table>
-        <tr>
-            <th>Booking ID</th>
-            <th>Flight Number</th>
-            <th>Journey Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        <tr th:each="booking : ${bookings}">
-            <td th:text="${booking.id}">BOOKING_ID</td>
-            <td th:text="${booking.flightNumber}">FLIGHT_NUMBER</td>
-            <td th:text="${booking.journeyDate}">JOURNEY_DATE</td>
-            <td th:text="${booking.status}">STATUS</td>
-            <td>
-                <a th:href="@{/bookings/upgrade/{bookingId}(bookingId=${booking.id})}">Upgrade</a> |
-                <a th:href="@{/bookings/cancel/{bookingId}(bookingId=${booking.id})}">Cancel</a>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+Flow and sample screens:
+first the application should have login page:
+  LOGIN (as title)
+User ID : (user has to enter)
+Password: (user has to enter)
+User Level: (user has to enter) dropdown of whether Employee or Admin 
+Login (as button)
+If user is a admin, on clicking login button, it should redirect to another page, which has 'view all registration' as a link. upon choosing this link, the admin should be shown 'sample output' page which has a table as
+UserId   Assessment    Date         Type
+101      Java         13-10-2024    Technical
+102      C#           20-09-2024    Technical
+103      Step Plus    29-10-2024    Behavioral
+104   Email Etiquette 13-09-2024    Behavioral etc
+If user is a Employee, on clicking login button, it should redirect to another page, which has registration links. 
+Registor for technical Assessment(as a link)
+Registor for Behavioral Assessment(as a link)
+upon choosing the technical Assessment, it should redirect to a page which has
+Technical Assessment Registration (as title)
+UserId:(user has to enter)
+Assessment: (user has to enter)
+Date: (user has to enter)
+Register(as button)
+by clicking on register, it has to register and saved in data base.
+similarly the user will be given a screen for behavioral assessment.
 
