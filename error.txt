@@ -139,3 +139,712 @@ public class AdminController {
 
 }
 ------------------------------------------
+Passenger.java
+package com.example;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Passenger {
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private String email;
+	private String password;
+	private String address;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public Passenger(String name, String email, String password, String address) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.address = address;
+	}
+	public Passenger() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Passenger(String email, String password) {
+		super();
+		this.email = email;
+		this.password = password;
+	}
+	@Override
+	public String toString() {
+		return "Passenger [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", address="
+				+ address + "]";
+	}
+	
+
+}
+PassengerRepository.java
+package com.example;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PassengerRepository extends JpaRepository<Passenger, Long>{
+	
+	Optional<Passenger> findByEmail(String email);
+
+}
+PassengerService.java
+package com.example;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PassengerService {
+	@Autowired
+	private PassengerRepository passengerRepository;
+	
+	public Passenger register(Passenger passenger) {
+		return passengerRepository.save(passenger);
+	}
+	
+	public Optional<Passenger> login(String email,String password){
+		return passengerRepository.findByEmail(email)
+				.filter(passenger -> passenger.getPassword().equals(password));
+	}
+
+}
+PassengerController.java
+package com.example;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class PassengerController {
+	
+	@Autowired
+	private PassengerService passengerService;
+	
+	@GetMapping("/register")
+	public String showRegisterForm(Model model) {
+		model.addAttribute("passenger", new Passenger());
+		return "register";
+	}
+	
+	@PostMapping("/register")
+	public String register(@ModelAttribute Passenger passenger,Model model) {
+		passengerService.register(passenger);
+		return "redirect:/login";
+	}
+	
+	@GetMapping("/login")
+	public String showLoginForm() {
+		return "login";
+	}
+	
+	@PostMapping("/login")
+	public String login(@RequestParam String email,@RequestParam String password,Model model) {
+		Optional<Passenger> passenger = passengerService.login(email, password);
+		if(passenger.isPresent()) {
+			return "redirect:/viewFlights";
+		}else {
+			model.addAttribute("error","Invalid Credentials");
+			return "login";
+		}
+	}
+
+}
+
+PassengerDataInitializer.java
+package com.example;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class PassengerDataInitializer {
+	
+	@Autowired
+    private PassengerRepository passengerRepository;
+ 
+    @Bean
+    public CommandLineRunner loadPassengerData() {
+        return args -> {
+            if (passengerRepository.count() == 0) {
+                passengerRepository.save(new Passenger("John Doe", "johndoe@example.com", "password123", "Delhi"));
+                passengerRepository.save(new Passenger("Jane Smith", "janesmith@example.com", "password456", "Mumbai"));
+            }
+        };
+    }
+
+}
+
+--------------------------
+Flight.java
+package com.example;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Flight {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	private String flightNumber;
+    private String source;
+    private String destination;
+    private LocalDate date;
+    private int seats;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getFlightNumber() {
+		return flightNumber;
+	}
+	public void setFlightNumber(String flightNumber) {
+		this.flightNumber = flightNumber;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getDestination() {
+		return destination;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+	public LocalDate getDate() {
+		return date;
+	}
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+	public int getSeats() {
+		return seats;
+	}
+	public void setSeats(int seats) {
+		this.seats = seats;
+	}
+	public Flight() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Flight(String flightNumber, String source, String destination, LocalDate date, int seats) {
+		super();
+		this.flightNumber = flightNumber;
+		this.source = source;
+		this.destination = destination;
+		this.date = date;
+		this.seats = seats;
+	}
+	@Override
+	public String toString() {
+		return "Flight [id=" + id + ", flightNumber=" + flightNumber + ", source=" + source + ", destination="
+				+ destination + ", date=" + date + ", seats=" + seats + "]";
+	}
+    
+	
+
+}
+
+FlightRepository.java
+package com.example;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface FlightRepository extends JpaRepository<Flight,Long>{
+	
+	
+
+}
+
+FlightService.java
+package com.example;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FlightService {
+	
+	 @Autowired
+	    private FlightRepository flightRepository;
+	 
+	    public void addFlight(FlightRequest request) {
+	        Flight flight = new Flight(request.getFlightNumber(), request.getSource(), request.getDestination(), request.getDate(), request.getSeats());
+	        flightRepository.save(flight);
+	    }
+	 
+	    public boolean checkSeatAvailability(String flightId, String date) {
+	        // Logic to check seat availability
+	        return true;
+	    }
+	 
+	    public String generateReport(String date, String destination) {
+	        // Logic to generate report
+	        return "Report generated";
+	    }
+
+}
+
+FlightRequest.java
+package com.example;
+
+import java.time.LocalDate;
+
+public class FlightRequest {
+	
+	private String flightNumber;
+    private String source;
+    private String destination;
+    private LocalDate date;
+    private int seats;
+	public String getFlightNumber() {
+		return flightNumber;
+	}
+	public void setFlightNumber(String flightNumber) {
+		this.flightNumber = flightNumber;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getDestination() {
+		return destination;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+	public LocalDate getDate() {
+		return date;
+	}
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+	public int getSeats() {
+		return seats;
+	}
+	public void setSeats(int seats) {
+		this.seats = seats;
+	}
+    
+}
+
+FlightController.java
+package com.example;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class FlightController {
+	
+	 @Autowired
+	    private FlightService flightService;
+	 
+	    @PostMapping("/add")
+	    public ResponseEntity<String> addFlight(@RequestBody FlightRequest request) {
+	        flightService.addFlight(request);
+	        return ResponseEntity.ok("Flight added successfully");
+	    }
+	 
+	    @GetMapping("/availability")
+	    public ResponseEntity<String> checkSeatAvailability(@RequestParam String flightId, @RequestParam String date) {
+	        boolean available = flightService.checkSeatAvailability(flightId, date);
+	        return ResponseEntity.ok(available ? "Seats available" : "No seats available");
+	    }
+	 
+	    @GetMapping("/report")
+	    public ResponseEntity<String> generateReport(@RequestParam String date, @RequestParam String destination) {
+	        String report = flightService.generateReport(date, destination);
+	        return ResponseEntity.ok(report);
+	    }
+
+}
+
+FlightDataInitializer.java
+package com.example;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class FlightDataInitializer {
+	
+	 @Autowired
+	    private FlightRepository flightRepository;
+	 
+	    @Bean
+	    public CommandLineRunner loadFlightData() {
+	        return args -> {
+	            if (flightRepository.count() == 0) {
+	                flightRepository.save(new Flight("AI101", "New York", "Los Angeles", LocalDate.of(2024, 11, 10), 150));
+	                flightRepository.save(new Flight("BA202", "London", "Paris", LocalDate.of(2024, 11, 15), 100));
+	            }
+	        };
+	    }
+
+}
+------------------------
+Booking.java
+package com.example;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Booking {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	
+	private Long passengerId;
+	private Long flightId;
+	private String PassengerName;
+	private String address;
+	private LocalDate journeyDate;
+	private String destination;
+	private String boardingAirport;
+	private String purposeOfJourney;
+	private String modeOfPayment;
+	private String status;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getPassengerId() {
+		return passengerId;
+	}
+	public void setPassengerId(Long passengerId) {
+		this.passengerId = passengerId;
+	}
+	public Long getFlightId() {
+		return flightId;
+	}
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
+	}
+	public String getPassengerName() {
+		return PassengerName;
+	}
+	public void setPassengerName(String passengerName) {
+		PassengerName = passengerName;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public LocalDate getJourneyDate() {
+		return journeyDate;
+	}
+	public void setJourneyDate(LocalDate journeyDate) {
+		this.journeyDate = journeyDate;
+	}
+	public String getDestination() {
+		return destination;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+	public String getBoardingAirport() {
+		return boardingAirport;
+	}
+	public void setBoardingAirport(String boardingAirport) {
+		this.boardingAirport = boardingAirport;
+	}
+	public String getPurposeOfJourney() {
+		return purposeOfJourney;
+	}
+	public void setPurposeOfJourney(String purposeOfJourney) {
+		this.purposeOfJourney = purposeOfJourney;
+	}
+	public String getModeOfPayment() {
+		return modeOfPayment;
+	}
+	public void setModeOfPayment(String modeOfPayment) {
+		this.modeOfPayment = modeOfPayment;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Booking() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Booking(Long passengerId, Long flightId, String passengerName, String address, LocalDate journeyDate,
+			String destination, String boardingAirport, String purposeOfJourney, String modeOfPayment, String status) {
+		super();
+		this.passengerId = passengerId;
+		this.flightId = flightId;
+		PassengerName = passengerName;
+		this.address = address;
+		this.journeyDate = journeyDate;
+		this.destination = destination;
+		this.boardingAirport = boardingAirport;
+		this.purposeOfJourney = purposeOfJourney;
+		this.modeOfPayment = modeOfPayment;
+		this.status = status;
+	}
+	@Override
+	public String toString() {
+		return "Booking [id=" + id + ", passengerId=" + passengerId + ", flightId=" + flightId + ", PassengerName="
+				+ PassengerName + ", address=" + address + ", journeyDate=" + journeyDate + ", destination="
+				+ destination + ", boardingAirport=" + boardingAirport + ", purposeOfJourney=" + purposeOfJourney
+				+ ", modeOfPayment=" + modeOfPayment + ", status=" + status + "]";
+	}
+	
+	
+
+}
+
+BookingRepository.java
+package com.example;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BookingRepository extends JpaRepository<Booking,Long> {
+	List<Booking> findByPassengerId(Long passengerId);
+
+}
+
+BookingService.java
+package com.example;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BookingService {
+	
+	@Autowired
+    private BookingRepository bookingRepository;
+ 
+    public Booking createBooking(Booking booking) {
+        booking.setStatus("CONFIRMED");
+        return bookingRepository.save(booking);
+    }
+ 
+    public List<Booking> getBookingsByPassengerId(Long passengerId) {
+        return bookingRepository.findByPassengerId(passengerId);
+    }
+ 
+    public Optional<Booking> getBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId);
+    }
+ 
+    public Booking upgradeBooking(Long bookingId) {
+        Optional<Booking> booking = bookingRepository.findById(bookingId);
+        if (booking.isPresent()) {
+            Booking updatedBooking = booking.get();
+            updatedBooking.setStatus("UPGRADED");
+            return bookingRepository.save(updatedBooking);
+        }
+        throw new RuntimeException("Booking not found");
+    }
+ 
+    public void cancelBooking(Long bookingId) {
+        bookingRepository.deleteById(bookingId);
+    }
+
+}
+
+BookingDataInitializer.java
+package com.example;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+@Configuration
+public class BookingDataInitializer {
+	
+	 @Autowired
+	    private BookingRepository bookingRepository;
+	 
+	    @Bean
+	    public CommandLineRunner loadBookingData() {
+	        return args -> {
+	            if (bookingRepository.count() == 0) {
+	                bookingRepository.save(new Booking(1L, 1L, "John Doe", "New York",LocalDate.of(2024, 11, 10), "Los Angeles","NewYork Airport",  "Business", "Credit Card","Booked"));
+	                bookingRepository.save(new Booking(2L, 2L, "Jane Smith", "London",LocalDate.of(2024, 11, 15), "Paris","Paris Airport",  "Vacation", "PayPal","Booked"));
+	            }
+	        };
+	    }
+
+}
+
+BookingController.java
+package com.example;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/bookings")
+public class BookingController {
+	 
+	    @Autowired
+	    private BookingService bookingService;
+	 
+	    @GetMapping("/create")
+	    public String showBookingForm(Model model) {
+	        model.addAttribute("booking", new Booking());
+	        return "createBooking";
+	    }
+	 
+	    @PostMapping("/create")
+	    public String createBooking(@ModelAttribute Booking booking, Model model) {
+	        Booking newBooking = bookingService.createBooking(booking);
+	        model.addAttribute("booking", newBooking);
+	        return "bookingConfirmation";
+	    }
+	 
+	    @GetMapping("/view/{passengerId}")
+	    public String viewBookings(@PathVariable Long passengerId, Model model) {
+	        List<Booking> bookings = bookingService.getBookingsByPassengerId(passengerId);
+	        model.addAttribute("bookings", bookings);
+	        return "viewBookings";
+	    }
+	 
+	    @PostMapping("/upgrade/{bookingId}")
+	    public String upgradeBooking(@PathVariable Long bookingId, Model model) {
+	        Booking updatedBooking = bookingService.upgradeBooking(bookingId);
+	        model.addAttribute("booking", updatedBooking);
+	        return "bookingConfirmation";
+	    }
+	 
+	    @PostMapping("/cancel/{bookingId}")
+	    public String cancelBooking(@PathVariable Long bookingId) {
+	        bookingService.cancelBooking(bookingId);
+	        return "redirect:/bookings/view";
+	    }
+
+}
+---------------------
+UserManagementApplication.java
+package com.example;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class UserManagementApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(UserManagementApplication.class, args);
+	}
+	
+	@Autowired
+    private AdminRepository adminRepository;
+ 
+    @Bean
+    public CommandLineRunner loadAdminData() {
+        return args -> {
+            if (adminRepository.count() == 0) {
+                adminRepository.save(new Admin("admin1", "password123"));
+                adminRepository.save(new Admin("admin2", "password456"));
+            }
+        };
+    }
+}
