@@ -1,1 +1,32 @@
+viewFlights.html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Available Flights</title>
+</head>
+<body>
+    <h2>Available Flights</h2>
+    <table>
+        <tr>
+            <th>Flight Number</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Date</th>
+            <th>Seats</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="flight : ${flights}">
+            <td th:text="${flight.flightNumber}">FLIGHT_NUMBER</td>
+            <td th:text="${flight.source}">SOURCE</td>
+            <td th:text="${flight.destination}">DESTINATION</td>
+            <td th:text="${flight.date}">DATE</td>
+            <td th:text="${flight.seats}">SEATS</td>
+            <td>
+                <a th:href="@{/bookings/create(flightId=${flight.id})}">Book Now</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+-------
 
