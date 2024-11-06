@@ -13,24 +13,8 @@ public class Admin {
 	private long id;
 	private String username;
 	private String password;
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+        //getters and setters
+	
 	public Admin() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -156,36 +140,10 @@ public class Passenger {
 	private String email;
 	private String password;
 	private String address;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+        //getters and setters
+	
 	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
+	
 	public Passenger(String name, String email, String password, String address) {
 		super();
 		this.name = name;
@@ -344,42 +302,7 @@ public class Flight {
     private String destination;
     private LocalDate date;
     private int seats;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getFlightNumber() {
-		return flightNumber;
-	}
-	public void setFlightNumber(String flightNumber) {
-		this.flightNumber = flightNumber;
-	}
-	public String getSource() {
-		return source;
-	}
-	public void setSource(String source) {
-		this.source = source;
-	}
-	public String getDestination() {
-		return destination;
-	}
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-	public LocalDate getDate() {
-		return date;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	public int getSeats() {
-		return seats;
-	}
-	public void setSeats(int seats) {
-		this.seats = seats;
-	}
+        //getters and setters
 	public Flight() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -456,36 +379,7 @@ public class FlightRequest {
     private String destination;
     private LocalDate date;
     private int seats;
-	public String getFlightNumber() {
-		return flightNumber;
-	}
-	public void setFlightNumber(String flightNumber) {
-		this.flightNumber = flightNumber;
-	}
-	public String getSource() {
-		return source;
-	}
-	public void setSource(String source) {
-		this.source = source;
-	}
-	public String getDestination() {
-		return destination;
-	}
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-	public LocalDate getDate() {
-		return date;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	public int getSeats() {
-		return seats;
-	}
-	public void setSeats(int seats) {
-		this.seats = seats;
-	}
+        //getters and setters
     
 }
 
@@ -580,72 +474,8 @@ public class Booking {
 	private String purposeOfJourney;
 	private String modeOfPayment;
 	private String status;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Long getPassengerId() {
-		return passengerId;
-	}
-	public void setPassengerId(Long passengerId) {
-		this.passengerId = passengerId;
-	}
-	public Long getFlightId() {
-		return flightId;
-	}
-	public void setFlightId(Long flightId) {
-		this.flightId = flightId;
-	}
-	public String getPassengerName() {
-		return PassengerName;
-	}
-	public void setPassengerName(String passengerName) {
-		PassengerName = passengerName;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public LocalDate getJourneyDate() {
-		return journeyDate;
-	}
-	public void setJourneyDate(LocalDate journeyDate) {
-		this.journeyDate = journeyDate;
-	}
-	public String getDestination() {
-		return destination;
-	}
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-	public String getBoardingAirport() {
-		return boardingAirport;
-	}
-	public void setBoardingAirport(String boardingAirport) {
-		this.boardingAirport = boardingAirport;
-	}
-	public String getPurposeOfJourney() {
-		return purposeOfJourney;
-	}
-	public void setPurposeOfJourney(String purposeOfJourney) {
-		this.purposeOfJourney = purposeOfJourney;
-	}
-	public String getModeOfPayment() {
-		return modeOfPayment;
-	}
-	public void setModeOfPayment(String modeOfPayment) {
-		this.modeOfPayment = modeOfPayment;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+        //getters and setters
+	
 	public Booking() {
 		super();
 		// TODO Auto-generated constructor stub
