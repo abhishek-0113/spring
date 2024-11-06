@@ -23,3 +23,25 @@ Register(as button)
 by clicking on register, it has to register and saved in data base.
 similarly the user will be given a screen for behavioral assessment.
 
+-------------
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Admin Dashboard</title></head>
+<body>
+    <h2>View All Registrations</h2>
+    <table border="1">
+        <tr>
+            <th>UserId</th>
+            <th>Assessment</th>
+            <th>Date</th>
+            <th>Type</th>
+        </tr>
+        <tr th:each="registration : ${registrations}">
+            <td th:text="${registration.userId}">UserId</td>
+            <td th:text="${registration.assessment}">Assessment</td>
+            <td th:text="${registration.date}">Date</td>
+            <td th:text="${registration.type}">Type</td>
+        </tr>
+    </table>
+</body>
+</html>
