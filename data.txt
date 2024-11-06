@@ -29,4 +29,34 @@ viewFlights.html
 </body>
 </html>
 -------
+viewBookings.html
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Bookings</title>
+</head>
+<body>
+    <h2>Your Bookings</h2>
+    <table>
+        <tr>
+            <th>Booking ID</th>
+            <th>Flight Number</th>
+            <th>Journey Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.id}">BOOKING_ID</td>
+            <td th:text="${booking.flightNumber}">FLIGHT_NUMBER</td>
+            <td th:text="${booking.journeyDate}">JOURNEY_DATE</td>
+            <td th:text="${booking.status}">STATUS</td>
+            <td>
+                <a th:href="@{/bookings/upgrade/{bookingId}(bookingId=${booking.id})}">Upgrade</a> |
+                <a th:href="@{/bookings/cancel/{bookingId}(bookingId=${booking.id})}">Cancel</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
 
