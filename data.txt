@@ -45,3 +45,43 @@ similarly the user will be given a screen for behavioral assessment.
     </table>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>View Registrations</title></head>
+<body>
+    <h2>Registrations</h2>
+    <form th:action="@{/admin/view-registrations}" method="get">
+        <label for="type">Filter by Type:</label>
+        <select name="type">
+            <option value="">All</option>
+            <option value="Technical" th:selected="${selectedType == 'Technical'}">Technical</option>
+            <option value="Behavioral" th:selected="${selectedType == 'Behavioral'}">Behavioral</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Assessment</th>
+                <th>Date</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="registration : ${registrations}">
+                <td th:text="${registration.id}"></td>
+                <td th:text="${registration.userId}"></td>
+                <td th:text="${registration.assessment}"></td>
+                <td th:text="${registration.date}"></td>
+                <td th:text="${registration.type}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin/dashboard}">Back to Dashboard</a>
+</body>
+</html>
+
+
