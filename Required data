@@ -275,3 +275,6 @@ feign.FeignException$NotFound: [404] during [GET] to [http://employee-service/em
 2024-11-28T10:30:33.026+05:30  INFO 28808 --- [admin-service] [rap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2024-11-28T10:35:33.038+05:30  INFO 28808 --- [admin-service] [rap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2024-11-28T10:40:33.046+05:30  INFO 28808 --- [admin-service] [rap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+
+
+
