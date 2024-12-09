@@ -47,7 +47,7 @@ public class Test {
 //			nums.add(14);
 //			//addition of collection elements
 //			Optional<Integer> addNums1 = nums.stream()
-//											.reduce((Integer val1,Integer val2) -> val1+val2);
+//					.reduce((Integer val1,Integer val2) -> val1+val2);
 //			System.out.println(addNums1.get());
 //			
 //			List<Integer> ascNums = nums.stream().sorted((Integer val1,Integer val2) -> val1-val2)
@@ -71,8 +71,8 @@ public class Test {
 //			System.out.println("Distinct numbers: "+distinctNums);
 //			
 //			int addNums = nums.stream()
-//								.mapToInt(Integer::intValue)
-//								.sum();
+//					.mapToInt(Integer::intValue)
+//					.sum();
 //								
 //			System.out.println("Addition of numbers: "+addNums);
 //			
