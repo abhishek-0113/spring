@@ -1,397 +1,46 @@
-AdminController.java
-package com.example;
+if(repo.findByEmail(email)!=null) {
+			if(repo.findByEmail(email).getPassword().equals(password)) {
+				
+				//Discovery client
+//				List<ServiceInstance> instances = dc.getInstances(ts);
+//				System.out.println(instances.size());
+//				URI uri =instances.get(0).getUri();
+				
+				//LoadBalancerClient
+				ServiceInstance instance = loadBalancerClient.choose(ts);
+				URI uri = URI.create(String.format("http://%s:%s", instance.getHost(),instance.getPort()));
+				
+				System.out.println("User-Service.loginUser.URI======"+ uri);;
+				String url = uri + "/Trade.html";
+				System.out.println("====================================");
+				System.out.println("User-Service.loginUser.URI======"+ uri);
+				
+				try {
+					response.sendRedirect(url);
+				}catch(Exception e){
+					System.out.println("Error in dispatching");
+				}
+				return "error";
+			}
+			else {
+				return "PasswordError"; //Logical view name
+			}
+		}
+		else {
+			return "Sorry";
+		}
+	}
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
-public class AdminController {
+@RequestMapping(value="/todos/all",method=RequestMethod.GET,produces="application/json")
+	@ResponseBody
+	public String displayTodos() {
+		CircuitBreaker cb = cbFactory.create("ToDoCircuitBreaker");
+		String url = "http://jsonplaceholder.typicode.com/todos";
+		return cb.run(()->restTemplate.getForObject(url, String.class), throwable->defaultTodos());
+	}
 	
-	@Autowired
-    private RegistrationService registrationService;
- 
-    @GetMapping("/admin/dashboard")
-    public String dashboard(Model model) {
-        model.addAttribute("registrations", registrationService.getAllRegistrations());
-        return "admin_dashboard";
-    }
-
-}
-
-AssessmentManagementApplication.java
-package com.example;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class AssessmentManagementApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(AssessmentManagementApplication.class, args);
+	//fallback method
+	public String defaultTodos() {
+		return "{'uesrId':1,'id':1,'title':'log message','completed':false}";
 	}
-
-}
-
-EmployeeController.java
-package com.example;
-
-import java.time.LocalDate;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-@Controller
-public class EmployeeController {
-	
-	 @Autowired
-	    private RegistrationService registrationService;
-	 
-	    @GetMapping("/employee/dashboard")
-	    public String dashboard() {
-	        return "employee_dashboard";
-	    }
-	 
-	    @GetMapping("/employee/register/technical")
-	    public String technicalRegistration(Model model) {
-	        model.addAttribute("technicalAssessments", registrationService.getTechnicalAssessments());
-	        return "register_technical";
-	    }
-	 
-	    @GetMapping("/employee/register/behavioral")
-	    public String behavioralRegistration(Model model) {
-	        model.addAttribute("behavioralAssessments", registrationService.getBehavioralAssessments());
-	        return "register_behavioral";
-	    }
-	 
-	    @PostMapping("/employee/register")
-	    public ModelAndView register(@RequestParam String userId, @RequestParam String assessment,
-	                                 @RequestParam String type, @RequestParam String date, Model model) {
-	        Registration registration = new Registration();
-	        registration.setUserId(userId);
-	        registration.setAssessment(assessment);
-	        registration.setType(type);
-	        registration.setDate(LocalDate.parse(date));
-	        registrationService.registerAssessment(registration);
-	        model.addAttribute("success", "Registration successful!");
-	        return new ModelAndView("employee_dashboard");
-	    }
-}
-
-EmpService.java
-package com.example;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
-@Service
-public class EmpService {
-	
-	// Static list of registered users (Employees and Admins)
-    private static final List<EmpUser> registeredUsers = Arrays.asList(
-        new EmpUser("emp1", "password1", "EMP"),
-        new EmpUser("emp2", "password2", "EMP"),
-        new EmpUser("admin1", "password3", "ADMIN")
-    );
- 
-    public Optional<EmpUser> validateUser(String userId, String password, String userLevel) {
-        return registeredUsers.stream()
-                .filter(user -> user.getUserId().equals(userId)
-                        && user.getPassword().equals(password)
-                        && user.getUserLevel().equalsIgnoreCase(userLevel))
-                .findFirst();
-    }
-
-}
-
-EmpUser.java
-package com.example;
-
-public class EmpUser {
-	
-	private String userId;
-	private String password;
-	private String userLevel;
-	public EmpUser(String userId, String password, String userLevel) {
-		super();
-		this.userId = userId;
-		this.password = password;
-		this.userLevel = userLevel;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getUserLevel() {
-		return userLevel;
-	}
-	public void setUserLevel(String userLevel) {
-		this.userLevel = userLevel;
-	}	
-
-}
-
-LoginController.java
-package com.example;
-
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-@Controller
-public class LoginController {
-	
-	@Autowired
-    private EmpService empService;
- 
-    @GetMapping("/")
-    public String login() {
-        return "login";
-    }
- 
-    @GetMapping("/login")
-    public String showLoginPage() {
-        return "login";
-    }
- 
-    @PostMapping("/login")
-    public String login(@RequestParam String userId, @RequestParam String password,
-                        @RequestParam String userLevel, Model model) {
- 
-        Optional<EmpUser> user = empService.validateUser(userId, password, userLevel);
- 
-        if (user.isPresent()) {
-            if (user.get().getUserLevel().equalsIgnoreCase("EMP")) {
-                return "redirect:/employee/dashboard";
-            } else if (user.get().getUserLevel().equalsIgnoreCase("ADMIN")) {
-                return "redirect:/admin/dashboard";
-            }
-        } else {
-            model.addAttribute("error", "Invalid User ID, Password, or User Level");
-            return "login";
-        }
-        return "login";
-    }
-
-}
-
-Registration.java
-package com.example;
-
-import java.time.LocalDate;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "registrations")
-public class Registration {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
- 
-    private String userId;
-    private String assessment;
-    private LocalDate date;
-    private String type;
-	//getters and setters
-	@Override
-	public String toString() {
-		return "Registration [id=" + id + ", userId=" + userId + ", assessment=" + assessment + ", date=" + date
-				+ ", type=" + type + "]";
-	}
-	public Registration() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Registration(String userId, String assessment, LocalDate date, String type) {
-		super();
-		this.userId = userId;
-		this.assessment = assessment;
-		this.date = date;
-		this.type = type;
-	} 
-
-}
-
-RegistrationRepository.java
-package com.example;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
-@Repository
-public class RegistrationRepository {
-	
-	private List<Registration> registrations = new ArrayList<>();
- 
-    public void save(Registration registration) {
-        registrations.add(registration);
-    }
-
-	public List<Registration> findAll() {
-		// TODO Auto-generated method stub
-		return registrations;
-	}
-
-}
-
-RegistrationService.java
-package com.example;
-
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
-public class RegistrationService {
-	
-	 @Autowired
-	    private RegistrationRepository repository;
-	 
-	    // Static lists for available assessments
-	    private static final List<String> TECHNICAL_ASSESSMENTS = Arrays.asList("Java", "C#", "PHP", "PERL");
-	    private static final List<String> BEHAVIORAL_ASSESSMENTS = Arrays.asList("Step Plus", "Email Etiquette", "Learning Agility");
-	 
-	    public List<Registration> getAllRegistrations() {
-	        return repository.findAll();
-	    }
-	 
-	    public List<String> getTechnicalAssessments() {
-	        return TECHNICAL_ASSESSMENTS;
-	    }
-	 
-	    public List<String> getBehavioralAssessments() {
-	        return BEHAVIORAL_ASSESSMENTS;
-	    }
-	 
-	    public void registerAssessment(Registration registration) {
-	        repository.save(registration);
-	    }
-
-}
-Thymeleaf Templates:
-admin_dashboard.html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Admin Dashboard</title></head>
-<body>
-    <h2>View All Registrations</h2>
-    <table border="1">
-        <tr>
-            <th>UserId</th>
-            <th>Assessment</th>
-            <th>Date</th>
-            <th>Type</th>
-        </tr>
-        <tr th:each="registration : ${registrations}">
-            <td th:text="${registration.userId}">UserId</td>
-            <td th:text="${registration.assessment}">Assessment</td>
-            <td th:text="${registration.date}">Date</td>
-            <td th:text="${registration.type}">Type</td>
-        </tr>
-    </table>
-</body>
-</html>
-
-employee_dashboard.html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Employee Dashboard</title></head>
-<body>
-    <h2>Employee Dashboard</h2>
-    <a th:href="@{/employee/register/technical}">Register for Technical Assessment</a><br>
-    <a th:href="@{/employee/register/behavioral}">Register for Behavioral Assessment</a><br>
-    <p th:if="${success}" th:text="${success}" style="color: green;"></p>
-</body>
-</html>
-
-login.html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Login</title></head>
-<body>
-	<h1>Assessment Management <h1>
-    <h2>Login</h2>
-    <form th:action="@{/login}" method="post">
-        User ID: <input type="text" name="userId"><br>
-        Password: <input type="password" name="password"><br>
-        User Level:
-        <select name="userLevel">
-            <option value="EMP">Employee</option>
-            <option value="ADMIN">Admin</option>
-        </select><br>
-        <button type="submit">Login</button>
-    </form>
-    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
-</body>
-</html>
-
-register_behavioral.html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Register for Behavioral Assessment</title></head>
-<body>
-    <h2>Behavioral Assessment Registration</h2>
-    <form th:action="@{/employee/register}" method="post">
-        UserId: <input type="text" name="userId"><br>
-        Assessment:
-        <select name="assessment">
-            <option th:each="assessment : ${behavioralAssessments}" th:value="${assessment}" th:text="${assessment}">Assessment</option>
-        </select><br>
-        Date: <input type="date" name="date"><br>
-        <input type="hidden" name="type" value="Behavioral">
-        <button type="submit">Register</button>
-    </form>
-</body>
-</html>
-
-register_technical.html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Register for Technical Assessment</title></head>
-<body>
-    <h2>Technical Assessment Registration</h2>
-    <form th:action="@{/employee/register}" method="post">
-        UserId: <input type="text" name="userId"><br>
-        Assessment:
-        <select name="assessment">
-            <option th:each="assessment : ${technicalAssessments}" th:value="${assessment}" th:text="${assessment}">Assessment</option>
-        </select><br>
-        Date: <input type="date" name="date"><br>
-        <input type="hidden" name="type" value="Technical">
-        <button type="submit">Register</button>
-    </form>
-</body>
-</html>
