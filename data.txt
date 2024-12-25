@@ -2,10 +2,10 @@ Input (stdin)
 1
 debit
 Your Output (stdout)
-1 13198
-2 16742
-3 18856
-4 10357
+1 13199
+2 16746
+3 18860
+4 10361
 Expected Output
 
 Download
@@ -18,10 +18,10 @@ Input (stdin)
 6
 credit
 Your Output (stdout)
-1 16389
-2 21080
-3 15450
-4 16710
+1 16395
+2 21086
+3 15453
+4 16711
 Expected Output
 
 Download
@@ -33,10 +33,10 @@ Input (stdin)
 6
 debit
 Your Output (stdout)
-1 16943
-2 21898
-3 3323
-4 9633
+1 16948
+2 21904
+3 3324
+4 9635
 Expected Output
 
 Download
@@ -50,9 +50,9 @@ Input (stdin)
 credit
 Your Output (stdout)
 1 5821
-2 16191
-3 15373
-4 20770
+2 16196
+3 15372
+4 20775
 Expected Output
 
 Download
