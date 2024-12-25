@@ -1,273 +1,55 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-public class Test {
-		
-		public static void main(String[] args) {
-			//fibonacci series
-//		int n1=0,n2=1,n3,i,count=10;
-//		System.out.print(n1+" "+n2);
-//		for(i=2;i<count;++i) {
-//			n3=n1+n2;
-//			System.out.print(" "+n3);
-//			n1=n2;
-//			n2=n3;
-//		}
-			//palindrome
-//			Scanner scanner = new Scanner(System.in);
-//			System.out.println("Enter a String: ");
-//			String input = scanner.nextLine();
-//			input=input.replaceAll("\\s", "").toLowerCase();
-//			
-//			boolean isPalin = true;
-//			for(int i=0;i<input.length()/2;i++) {
-//				if(input.charAt(i) != input.charAt(input.length()-1-i)) {
-//					isPalin=false;
-//					break;
-//				}
-//			}
-//			if(isPalin) {
-//				System.out.println("Palindrome");
-//			}else {
-//				System.out.println("Not a Palindrome");
-//			}
-			
-			//
-//			List<Integer> nums = new ArrayList<Integer>();
-//			nums.add(10);
-//			nums.add(10);
-//			nums.add(15);
-//			nums.add(19);
-//			nums.add(19);
-//			nums.add(12);
-//			nums.add(14);
-//			//addition of collection elements
-//			Optional<Integer> addNums1 = nums.stream()
-//					.reduce((Integer val1,Integer val2) -> val1+val2);
-//			System.out.println(addNums1.get());
-//			
-//			List<Integer> ascNums = nums.stream().sorted((Integer val1,Integer val2) -> val1-val2)
-//					.collect(Collectors.toList());
-//			
-//			System.out.println("Ascending numbers: "+ascNums);
-//			
-//			List<Integer> descNums = nums.stream().sorted((Integer val1,Integer val2) -> val2-val1)
-//					.collect(Collectors.toList());
-//			
-//			System.out.println("descending numbers: "+descNums);
-//			
-//			List<Integer> evenNums = nums.stream().filter((Integer val) -> val%2==0)
-//					.collect(Collectors.toList());
-//			
-//			System.out.println("Even numbers: "+evenNums);
-//			
-//			List<Integer> distinctNums = nums.stream().distinct()
-//					.collect(Collectors.toList());
-//
-//			System.out.println("Distinct numbers: "+distinctNums);
-//			
-//			int addNums = nums.stream()
-//					.mapToInt(Integer::intValue)
-//					.sum();
-//								
-//			System.out.println("Addition of numbers: "+addNums);
-//			
-//			List<Integer> sqrtNums = nums.stream().map(n-> n*n)
-//					.collect(Collectors.toList());
-//			
-//			System.out.println("Square root of numbers: "+sqrtNums);
-//			
-//			List<Integer> duplicateNums = nums.stream()
-//					.filter(n -> Collections.frequency(nums, n) > 1)
-//					.collect(Collectors.toList());
-//			
-//			System.out.println("Duplicate numbers: "+duplicateNums);
-//			
-//			Map<String,List<Integer>> groupedNums = nums.stream()
-//					.collect(Collectors.groupingBy(n -> (n%2==0)? "Even" : "Odd"));
-//			
-//			System.out.println("Grouped numbers: "+groupedNums);
-//			
-//			groupedNums.forEach((key,value) ->System.out.println(key +": "+ value) );
-			
-//			//Nth highest number
-//			List<Integer> nums = new ArrayList<Integer>();
-//			nums.add(10);
-//			nums.add(16);
-//			nums.add(15);
-//			nums.add(19);
-//			nums.add(22);
-//			nums.add(12);
-//			nums.add(14);
-//			
-//			int highestNum = Collections.max(nums);
-//			System.out.println("Highest number: "+highestNum);
-//			int n=3;
-//			int nthHighest = findNthHighest(nums,n);
-//			System.out.println(n + "rd Highest number: "+nthHighest);
-//
-//			
-//		}
-//
-//		public static int findNthHighest(List<Integer> nums, int n) {
-//			List<Integer> sortedList = new ArrayList<>(nums);
-//			sortedList.sort(Collections.reverseOrder());
-//			if(n > 0 && n<= sortedList.size()) {
-//				return sortedList.get(n-1);
-//			}else {
-//				throw new IllegalArgumentException("Invalid vale of n: "+n);
-//			}
-			
-//			String input = "hello world";
-//			Map<Character,Long> characterCount = input.chars()
-//					.mapToObj(c -> (char)c)
-//					.filter(c -> !Character.isWhitespace(c))
-//					.collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
-//			
-//			characterCount.forEach((character,count)->
-//			System.out.println(character +" -> "+ count));
-//			
-//			System.out.println(characterCount);
-			
-		}
-}
-
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-class Employee {
-	private int id;
-	private String name;
-	private double salary;
-	private int age;
-	private String department;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public double getSalary() {
-		return salary;
-	}
-	public void setSalary(double salary) {
-		this.salary = salary;
-	}
-	public int getAge() {
-		return age;
-	}
-	public void setAge(int age) {
-		this.age = age;
-	}
-	public String getDepartment() {
-		return department;
-	}
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-	public Employee(int id, String name, double salary, int age, String department) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.salary = salary;
-		this.age = age;
-		this.department = department;
-	}
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", name=" + name + ", salary=" + salary + ", age=" + age + ", department="
-				+ department + "]";
-	}
-	
-
-}
-public class EmployeeOperations{
-	public static void main(String[] args) {
-		List<Employee> eList = new ArrayList<>();
-		eList.add(new Employee(1,"John",50000,30,"IT"));
-		eList.add(new Employee(2,"Alice",60000,55,"HR"));
-		eList.add(new Employee(3,"Bob",55000,45,"Finance"));
-		eList.add(new Employee(4,"John",45000,60,"IT"));
-		eList.add(new Employee(5,"Alice",62000,29,"Admin"));
-		
-		sortByName(eList);
-		sortByNameAndSalary(eList);
-		adjustSalaryBasedOnAge(eList);
-		groupByDepartment(eList);
-		findHighestSalaryByDept(eList);
-	}
-
-
-	//Sorting employee by name
-	public static void sortByName(List<Employee> eList) {
-		System.out.println("Sorted by Name:");
-		eList.sort(Comparator.comparing(Employee::getName));
-		eList.forEach(System.out::println);
-		System.out.println();
-	}
-	//Sorting employee by name and salary
-	public static void sortByNameAndSalary(List<Employee> eList) {
-		System.out.println("Sorted by Name and Salary:");
-		eList.sort(Comparator.comparing(Employee::getName)
-				.thenComparing(Employee::getSalary));
-		eList.forEach(System.out::println);
-		System.out.println();
-		
-	}
-	//Increase the salary by 10k if emp age >50 and decrease sal by 10k if age<50
-	public static void adjustSalaryBasedOnAge(List<Employee> eList) {
-		System.out.println("Adjusted Salary Based on Age:");
-		eList.forEach(emp -> {
-			if(emp.getAge() > 50) {
-				emp.setSalary(emp.getSalary() + 10000);
-			}else if(emp.getAge() < 50) {
-				emp.setSalary(emp.getSalary() - 10000);
-			}
-		});
-		eList.forEach(System.out::println);
-		System.out.println();
-		
-	}
-	//Group employees by department
-	public static void groupByDepartment(List<Employee> eList) {
-		System.out.println("Employees grouped by Department:");
-		Map<String,List<Employee>> groupedByDept = eList.stream()
-				.collect(Collectors.groupingBy(Employee::getDepartment));
-		groupedByDept.forEach((dept,employees) -> {
-			System.out.println(dept + ":");
-			employees.forEach(System.out::println);
-		});
-		System.out.println();
-		
-	}
-	//highest salary in each department
-	public static void findHighestSalaryByDept(List<Employee> eList) {
-		System.out.println("Highest Salary in Each Department:");
-		Map<String,Optional<Employee>> highestSalaryByDept = eList.stream()
-					.collect(Collectors.groupingBy(
-							Employee::getDepartment,
-							Collectors.maxBy(Comparator.comparing(Employee::getSalary))
-		));
-		highestSalaryByDept.forEach((dept,employee) -> {
-			employee.ifPresent(emp -> {
-				System.out.println(dept +": "+ emp.getName()+" with salary "+emp.getSalary());
-			});
-		});	
-		
-	}
-}
+Solution.java:112: error: cannot find symbol
+                JSONArray authorDataArray = authorResponse.optJSONArray("data");
+                                                          ^
+  symbol:   method optJSONArray(String)
+  location: variable authorResponse of type JSONObject
+Solution.java:113: error: cannot find symbol
+                if (authorDataArray != null && authorDataArray.length() > 0) {
+                                                              ^
+  symbol:   method length()
+  location: variable authorDataArray of type JSONArray
+Solution.java:114: error: cannot find symbol
+                    JSONObject authorData = authorDataArray.getJSONObject(0);
+                                                           ^
+  symbol:   method getJSONObject(int)
+  location: variable authorDataArray of type JSONArray
+Solution.java:115: error: cannot find symbol
+                    String about = authorData.optString("about", null);
+                                             ^
+  symbol:   method optString(String,<null>)
+  location: variable authorData of type JSONObject
+Solution.java:131: error: cannot find symbol
+                    totalPages = articlesResponse.optInt("total_pages", 1);
+                                                 ^
+  symbol:   method optInt(String,int)
+  location: variable articlesResponse of type JSONObject
+Solution.java:132: error: cannot find symbol
+                    JSONArray articlesData = articlesResponse.optJSONArray("data");
+                                                             ^
+  symbol:   method optJSONArray(String)
+  location: variable articlesResponse of type JSONObject
+Solution.java:135: error: cannot find symbol
+                        for (int i = 0; i < articlesData.length(); i++) {
+                                                        ^
+  symbol:   method length()
+  location: variable articlesData of type JSONArray
+Solution.java:136: error: cannot find symbol
+                            JSONObject article = articlesData.getJSONObject(i);
+                                                             ^
+  symbol:   method getJSONObject(int)
+  location: variable articlesData of type JSONArray
+Solution.java:137: error: cannot find symbol
+                            String title = article.optString("title", null);
+                                                  ^
+  symbol:   method optString(String,<null>)
+  location: variable article of type JSONObject
+Solution.java:138: error: cannot find symbol
+                            String storyTitle = article.optString("story_title", null);
+                                                       ^
+  symbol:   method optString(String,<null>)
+  location: variable article of type JSONObject
+Solution.java:176: error: incompatible types: String cannot be converted to Map
+                return new JSONObject(response.toString());
+                                                       ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+11 errors
